@@ -1,5 +1,15 @@
-# FA2 Smart contract template
+# Simple Tezos multisig wallet
 
+Add any number of signees to it. Set signature threshold. Anyone can send funds to this wallet address.
+And registered signees can propose sending funds, adding or removing signees etc. When proposal is registered
+signees are able to vote on it. When vote threshold met proposal can be executed by any signee.
+## Available proposal types:
+
+- Add signee (address)
+- Remove signee (address)
+- Send funds (address, mutez amount)
+- Set proposal duration (seconds)
+- Set vote threshold (number)
 
 # Requiremets
 

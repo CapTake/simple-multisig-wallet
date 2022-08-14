@@ -3,8 +3,7 @@ const { InMemorySigner } = require("@taquito/signer")
 
 const { migrate } = require("../scripts/helpers")
 
-const storage = require("../storage/Token")
-const aStorage = require("../storage/Tokensale")
+const aStorage = require("../storage/Wallet")
 
 module.exports = async (tezos, network) => {
 
@@ -19,27 +18,12 @@ module.exports = async (tezos, network) => {
     signer,
   })
 
-  console.log('Deploing FA2')
-  storage.default.admin = ADMIN
+  console.log('Deploing Multisig Wallet')
+  aStorage.default.signees = [ADMIN]
   const minteryAddress = await migrate(
     tezos,
-    "Token",
-    storage
-  )
-  console.log(`Token: ${minteryAddress}`)
-
-  aStorage.default.admin = ADMIN
-  aStorage.default.token = minteryAddress
-
-  console.log('Deploing Crowdsale contract')
-  const crowdsaleAddress = await migrate(
-    tezos,
-    "Tokensale",
+    "Wallet",
     aStorage
   )
-  console.log(`Crowdsale: ${crowdsaleAddress}`)
-
-  const contract = await tezos.contract.at(crowdsaleAddress);
-  let op = await contract.methods.whitelist_add([{ 0: ADMIN, 1: 2 }]).send()
-  await op.confirmation(1)
-}
+  console.log(`Address: ${minteryAddress}`)
+ }

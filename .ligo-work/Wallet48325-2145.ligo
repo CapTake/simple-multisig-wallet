@@ -1,9 +1,14 @@
-#include "../partial/fa2_types.ligo"
-#include "../partial/fa2_errors.ligo"
+ type proposal_action is
+  | Send_funds of tez
+  | Add_admin of address
+  | Remove_admin of address
+  | Set_threshold of nat
 
  type storage is record [
-    admin          : address;
-    pending_admin  : option(address);
+    admins         : set(address);
+    pending_send   : address * tez;
+    threshold      : nat;
+    duration
     ledger         : big_map (address, nat);
     metadata       : big_map (string, bytes);
     operators      : big_map (owner * address, unit);
@@ -18,8 +23,8 @@ type mint_params is [@layout:comb] record [
 ]
 
 type action is
-  | Balance_of of balance_of_params
-  | Confirm_admin
+  | Propose of propose_params
+  | Approve of nat
   | Mint of mint_params
   | Set_admin of option(address)
   | Transfer of transfer_params
