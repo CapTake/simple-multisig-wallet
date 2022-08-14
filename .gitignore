@@ -10,4 +10,4 @@ yarn.lock
 .pytest_cache
 .env.js
 .env
-
+.ligo-work
